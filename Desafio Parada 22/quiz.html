@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz</title>
+  <style>
+    body {
+      font-family: georgia, sans-serif;
+      margin: 0;
+      padding: 50px;
+      background-image: url("img/casashp.jpg");
+      background-color: #f3f3f3;
+    }
+    
+    h1 {
+      text-align: center;
+      background-color: wheat;
+    }
+    
+    #quiz-container {
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: rgba(249, 249, 20, 0.849);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px whitesmoke;
+    }
+    
+    #question-container {
+      margin-bottom: 20px;
+    }
+    
+    .question {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    #options-container button {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    #options-container button:hover {
+      background-color: coral;
+    }
+    
+    #next-button {
+      display: block;
+      margin: 0 auto;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      background-color: red;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    #next-button:hover {
+      background-color: #45a049;
+    }
+    
+    #score-container {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Quiz - Curiosidades sobre a saga Harry Potter</h1>
+  
+  <div id="quiz-container">
+    <div id="question-container"></div>
+    <div id="options-container"></div>
+    <button id="next-button" onclick="proximaPergunta()">Próxima</button>
+    <div id="score-container"></div>
+  </div>
+  
+  <script>
+    // Perguntas e respostas
+    const perguntas = [
+      {
+        pergunta: "Como se chama o Elfo Doméstico amigo de Harry Potter?",
+        opcoes: ["Dobby", "Cedrico Diggory", "Rúbeo Hagrid"],
+        opcaoCorreta: 0
+      },
+      {
+        pergunta: "Como é chamado um bruxo com descendência não bruxa?",
+        opcoes: ["Tonto", "Trouxa", "Bobo"],
+        opcaoCorreta: 1
+      },
+      {
+        pergunta: "Qual filme de Harry Potter teve mais bilheteria?",
+        opcoes: ["Harry Potter e a as Relíquias da Morte: Parte 2", "Harry Potter e a Pedra Filosofal", "Harry Potter e o Prisioneiro de Azkaban"],
+        opcaoCorreta: 0
+      },
+      {
+        pergunta: "Qual foi a primeira horcrux criada por Lord Voldemort?",
+        opcoes: ["Diário de Tom Riddle", "Capa da Invisibilidade", "Cobra Nagini"],
+        opcaoCorreta: 0
+      }
+    ];
+    
+    let pontuacao = 0;
+    let perguntaAtual = 0;
+  
+    function exibirPergunta() {
+      const questionContainer = document.getElementById("question-container");
+      const optionsContainer = document.getElementById("options-container");
+      
+      questionContainer.innerHTML = `<p class="question">${perguntas[perguntaAtual].pergunta}</p>`;
+      optionsContainer.innerHTML = "";
+      
+      for (let i = 0; i < perguntas[perguntaAtual].opcoes.length; i++) {
+        const option = document.createElement("button");
+        option.innerHTML = perguntas[perguntaAtual].opcoes[i];
+        option.setAttribute("onclick", `verificarResposta(${i})`);
+        optionsContainer.appendChild(option);
+      }
+    }
+    
+    function verificarResposta(resposta) {
+      if (resposta === perguntas[perguntaAtual].opcaoCorreta) {
+        pontuacao++;
+      }
+    }
+    
+    function proximaPergunta() {
+      perguntaAtual++;
+      
+      if (perguntaAtual === perguntas.length) {
+        pontuacaoFinal();
+      } else {
+        exibirPergunta();
+      }
+    }
+    
+    function pontuacaoFinal() {
+  const quizContainer = document.getElementById("quiz-container");
+  const scoreContainer = document.getElementById("score-container");
+  const restartButton = document.createElement("button");
+
+  quizContainer.removeChild(document.getElementById("question-container"));
+  quizContainer.removeChild(document.getElementById("options-container"));
+  quizContainer.removeChild(document.getElementById("next-button"));
+
+  scoreContainer.innerHTML = `<p>Sua pontuação final é: ${pontuacao} de ${perguntas.length}</p>`;
+  restartButton.innerHTML = "Recomeçar";
+  restartButton.setAttribute("onclick", "reiniciarQuiz()");
+  quizContainer.appendChild(restartButton);
+  }
+  
+    // Iniciar o quiz
+    exibirPergunta();
+  </script>
+</body>
+</html>
